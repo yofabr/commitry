@@ -16,7 +16,7 @@ export default function Navbar() {
 
         {/* Right side */}
         <Link
-          href="https://github.com/your-username/your-repo"
+          href="https://github.com/yofabr/commitry"
           target="_blank"
           className="group flex items-center gap-2 rounded-full border border-white/15 px-4 py-1.5 text-sm text-white/90 transition hover:border-white/30 hover:bg-white/5"
         >
