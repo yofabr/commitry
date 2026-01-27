@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Bitcount_Single } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
 
 const bitcount = Bitcount_Single({
   variable: "--font-geist-sans",
@@ -23,7 +22,7 @@ export default function RootLayout({
       <body
         className={`${bitcount.variable} antialiased`}
       >
-        <Navbar />
+        {/* <Navbar /> */}
         {children}
       </body>
     </html>
