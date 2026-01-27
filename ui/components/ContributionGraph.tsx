@@ -118,46 +118,52 @@ function organizeByWeeks(dates: Date[], contributions: Map<string, number>): (Co
 }
 
 // Memoized dot component for performance
-const ContributionDot = memo(({ 
-  contribution, 
-  isHovered, 
-  onClick, 
-  onMouseEnter, 
-  onMouseLeave,
-  color
-}: { 
-  contribution: ContributionData;
-  isHovered: boolean;
-  onClick: () => void;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
-  color: string;
-}) => {
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
+const ContributionDot = memo(
+  ({ 
+    contribution, 
+    isHovered, 
+    onClick, 
+    onMouseEnter, 
+    onMouseLeave,
+    color
+  }: { 
+    contribution: ContributionData;
+    isHovered: boolean;
+    onClick: () => void;
+    onMouseEnter: () => void;
+    onMouseLeave: () => void;
+    color: string;
+  }) => {
+    const formatDate = (date: Date) => {
+      return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    };
 
-  return (
-    <button
-      className={`w-3 h-3 transition-all duration-150 cursor-pointer ${
-        isHovered ? 'ring-2 ring-black dark:ring-white ring-offset-1' : ''
-      }`}
-      style={{
-        backgroundColor: color,
-      }}
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      title={`${contribution.count} ${contribution.count === 1 ? 'contribution' : 'contributions'} on ${formatDate(contribution.date)}`}
-      aria-label={`${contribution.count} contributions on ${formatDate(contribution.date)}`}
-    />
-  );
-});
+    return (
+      <button
+        className={`w-3 h-3 transition-all duration-150 cursor-pointer ${
+          isHovered ? 'ring-2 ring-black dark:ring-white ring-offset-1' : ''
+        }`}
+        style={{
+          backgroundColor: color,
+        }}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        title={`${contribution.count} ${contribution.count === 1 ? 'contribution' : 'contributions'} on ${formatDate(contribution.date)}`}
+        aria-label={`${contribution.count} contributions on ${formatDate(contribution.date)}`}
+      />
+    );
+  },
+  (prev, next) =>
+    prev.contribution === next.contribution &&
+    prev.isHovered === next.isHovered &&
+    prev.color === next.color
+);
 
 ContributionDot.displayName = 'ContributionDot';
 
@@ -256,12 +262,12 @@ function ContributionGraph({ contributions, selectedYear, onDotClick }: Contribu
               <div key={weekIdx} className="flex flex-col gap-1">
                 {week.map((contribution, dayIdx) => {
                   if (!contribution) {
+                    // Days that fall outside the selected year (padding at the start/end)
+                    // should not be shown as active "dots".
                     return (
-                      // <></>
                       <div
                         key={dayIdx}
                         className="w-3 h-3"
-                        style={{ backgroundColor: getColor(0) }}
                       />
                     );
                   }

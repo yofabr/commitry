@@ -23,7 +23,7 @@ export default function Home() {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [history, setHistory] = useState<Map<string, number>[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const saveTimeoutRef = useRef<NodeJS.Timeout>();
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -198,7 +198,7 @@ export default function Home() {
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-semibold text-black dark:text-white">
-              Contribution graph
+              Git Contribution graph
             </h2>
             <p className="text-sm text-black dark:text-white mt-1 opacity-70">
               Click on any day to set commit count. Click multiple times to cycle through 0-20 commits.
